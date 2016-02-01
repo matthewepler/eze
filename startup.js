@@ -5,9 +5,11 @@ var exec = require('child_process').exec;
 var MAC;
 var commands = [
 	'rfkill unblock bluetooth',
-//	'killall bluetoothd',
+	'systemctl disable bluetooth',
 	'hciconfig hci0 up',
+//	'hciconfig hci0 piscan',
 	'echo "src intel-iotdk http://iotdk.intel.com/repos/1.1/intelgalactic" > /etc/opkg/intel-iotdk.conf',
+//	'hciconfig hci0 sspmode',
 	'hcitool dev'
 ];
 
@@ -23,7 +25,7 @@ function runCmds(fn, errCount) {
 	}
 
 	exec(cmd, function(err, stdout, stderr) {
-		if (err || (stdout && commands.length > 0)) {
+		if (err || (stdout && commands.length > 1)) {
 			commands.unshift(cmd);
 			console.log("problem completing " + cmd + " [" + errCount + "]");
 			if (err) console.log(err.toString('utf8'));

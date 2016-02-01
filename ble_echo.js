@@ -19,7 +19,7 @@ var bleno = require('bleno');
 
 
 // set the device name unique string 
-process.env['BLENO_DEVICE_NAME'] = 'edison_1234';
+process.env['BLENO_DEVICE_NAME'] = 'edison_1235';
 
 // once bleno starts, begin advertising our BLE address
 bleno.on('stateChange', function(state) {
@@ -80,6 +80,14 @@ bleno.on('advertisingStart', function(error) {
 						onReadRequest : function(offset, callback) {
 							console.log('Read request received');
 							callback(this.RESULT_SUCCESS, new Buffer("Echo: " + (this.value ? this.value.toString('utf-8') : "")));
+							// Center device should send string w/ format "wifi,<SSID>,<pswd>"
+							// read, trim, save to variable
+							// split
+							// execute commands
+							// reset wlan0
+							// ping
+							// send confirmation
+							// update opkg
 						},
 
 						// accept a new value for the characteristic's value
