@@ -7,10 +7,7 @@ var commands = [
 	'rfkill unblock bluetooth',
 //	'killall bluetoothd',
 	'hciconfig hci0 up',
-	'rm /etc/opkg/base-feeds.conf',
-	'echo "src/gz all http://repo.opkg.net/edison/repo/all" >> /etc/opkg/base-feeds.conf',
-	'echo "src/gz edison http://repo.opkg.net/edison/repo/edison" >> /etc/opkg/base-feeds.conf',
-	'echo "src/gz core2-32 http://repo.opkg.net/edison/repo/core2-32" >> /etc/opkg/base-feeds.conf',
+	'echo "src intel-iotdk http://iotdk.intel.com/repos/1.1/intelgalactic" > /etc/opkg/intel-iotdk.conf',
 	'hcitool dev'
 ];
 
@@ -49,6 +46,7 @@ function runCmds(fn, errCount) {
 //runCmds(); // for running as stand-alone script
 exports.runStartupCmds = runCmds;
 //exports.MAC = MAC;
+//
 //fn passed to runCmds to solve synchronous need in app.js. Other option
 // would be to use async library's waterfall function or (according to Sanjay),
 // using a Promise. If we start adding synchronous functionality to app.js, I
