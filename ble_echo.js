@@ -80,21 +80,27 @@ bleno.on('advertisingStart', function(error) {
 						onReadRequest : function(offset, callback) {
 							console.log('Read request received');
 							callback(this.RESULT_SUCCESS, new Buffer("Echo: " + (this.value ? this.value.toString('utf-8') : "")));
+													},
+						// accept a new value for the characteristic's value
+						onWriteRequest : function(data, offset, withoutResponse, callback) {
+							this.value = data;
+							var readStr = this.value.toString('utf-8').trim();
+							console.log('Write request: value = ' + readStr);
+							callback(this.RESULT_SUCCESS);
 							// Center device should send string w/ format "wifi,<SSID>,<pswd>"
-							// read, trim, save to variable
 							// split
+							if (readStr.length > 1) {
+								var strArray = readStr.split(',');
+								if (strArray[0] == 'wifi') {
+									console.log("here, sucka");
+								}
+							}
 							// execute commands
 							// reset wlan0
 							// ping
 							// send confirmation
 							// update opkg
-						},
 
-						// accept a new value for the characteristic's value
-						onWriteRequest : function(data, offset, withoutResponse, callback) {
-							this.value = data;
-							console.log('Write request: value = ' + this.value.toString('utf-8'));
-							callback(this.RESULT_SUCCESS);
 						}
 
 					})
