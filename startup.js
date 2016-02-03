@@ -5,8 +5,8 @@ var exec = require('child_process').exec;
 var MAC;
 var commands = [
 	'rfkill unblock bluetooth',
-	'hciconfig hci0 down',
-//	'systemctl disable bluetooth', // on startup only, should be in app.js (?)
+	// 'hciconfig hci0 down', // should only be run if it's NOT the first time. d
+//	'systemctl disable bluetooth', //this runs on startup, as configured in /etc/init.d/bootup.sh 
 	'hciconfig hci0 up',
 //	'hciconfig hci0 piscan',
 	'echo "src intel-iotdk http://iotdk.intel.com/repos/1.1/intelgalactic" > /etc/opkg/intel-iotdk.conf',

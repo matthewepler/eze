@@ -11,6 +11,8 @@
 
  This example is Beerware (https://en.wikipedia.org/wiki/Beerware).
  */
+var async = require('async');
+
 var exports = module.exports = {};
 
 var start = function() {
@@ -93,6 +95,12 @@ bleno.on('advertisingStart', function(error) {
 								var strArray = readStr.split(',');
 								if (strArray[0] == 'wifi') {
 									console.log("here, sucka");
+									async.waterfall([
+										// array of functions
+										
+									], function (err, results) {
+										// whemn done	
+									});	
 								}
 							}
 							// execute commands
