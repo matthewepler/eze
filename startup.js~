@@ -2,24 +2,19 @@
 var exports = module.exports = {};
 var exec = require('child_process').exec;
 
-var MAC;
 var commands = [
 	'rfkill unblock bluetooth',
-	'hciconfig hci0 down',
-//	'systemctl disable bluetooth', //this runs on startup, as configured in /etc/init.d/bootup.sh 
+	'systemctl disable bluetooth', 
 	'hciconfig hci0 up',
-//	'hciconfig hci0 piscan',
-	'echo "src intel-iotdk http://iotdk.intel.com/repos/1.1/intelgalactic" > /etc/opkg/intel-iotdk.conf',
-//	'hciconfig hci0 sspmode',
 	'hcitool dev'
 ];
 
-function runCmds(fn, errCount) {
+function runCmds(errCount) {
 	var errCount = errCount || 0;
 	var cmd = commands.shift();
 	if (!cmd) {
-		console.log('bluetooth init complete');
-		return fn();
+		console.log('bluetooth startup complete');
+		return true;
 	}
 	if (errCount > 10) {
 		throw('too many errors: ' + cmd);
@@ -38,11 +33,10 @@ function runCmds(fn, errCount) {
 			if (commands.length == 0 && stdout == null) {
 				throw("Bluetooth did not initiate. No MAC address reported from hcitool");
 			} else if (commands.length == 0 && stdout) {
-				var tmp = stdout.toString('utf8');
-				MAC = tmp.slice(tmp.length - 18);
+				//
 			}
 		}
-		runCmds(fn, errCount);
+		runCmds(errCount);
 	});
 }
 
