@@ -12,8 +12,18 @@
  This example is Beerware (https://en.wikipedia.org/wiki/Beerware).
  */
 var async = require('async');
-
 var exports = module.exports = {};
+var fs = require('fs');
+var exec = require('exec');
+
+function writeWPAconfig(callback) {
+	var files = fs.readdirSync('/etc/wpa_supplicant/');	
+	if (files.indexOf('wpa_supplicant.conf') > 0) {
+		exec('rm wpa_supplicant.conf', function() {
+				
+		});
+	}
+}
 
 var start = function() {
 // using the bleno module
@@ -95,12 +105,7 @@ bleno.on('advertisingStart', function(error) {
 								var strArray = readStr.split(',');
 								if (strArray[0] == 'wifi') {
 									console.log("here, sucka");
-									async.waterfall([
-										// array of functions
-										
-									], function (err, results) {
-										// whemn done	
-									});	
+									writeWPAconfig();
 								}
 							}
 							// execute commands
@@ -110,7 +115,6 @@ bleno.on('advertisingStart', function(error) {
 							// update opkg
 
 						}
-
 					})
 				]
 			})
