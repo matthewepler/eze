@@ -2,7 +2,7 @@ var startup = require('./startup.js');
 var ble = require('./ble_echo.js');
 
 function thisFunc() {
-	console.log("hi i worked");
+	ble.start();	
 }
 startup.runStartupCmds(thisFunc);
 
