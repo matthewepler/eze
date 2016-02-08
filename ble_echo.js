@@ -11,7 +11,19 @@
 
  This example is Beerware (https://en.wikipedia.org/wiki/Beerware).
  */
+var async = require('async');
 var exports = module.exports = {};
+var fs = require('fs');
+var exec = require('child_process').exec;
+
+function writeWPAconfig(callback) {
+	var files = fs.readdirSync('/etc/wpa_supplicant/');	
+	if (files.indexOf('wpa_supplicant.conf') > 0) {
+		exec('rm wpa_supplicant.conf', function() {
+				
+		});
+	}
+}
 
 var start = function() {
 // using the bleno module
@@ -19,7 +31,7 @@ var bleno = require('bleno');
 
 
 // set the device name unique string 
-process.env['BLENO_DEVICE_NAME'] = 'edison_1234';
+process.env['BLENO_DEVICE_NAME'] = 'edison_1235';
 
 // once bleno starts, begin advertising our BLE address
 bleno.on('stateChange', function(state) {
@@ -80,15 +92,29 @@ bleno.on('advertisingStart', function(error) {
 						onReadRequest : function(offset, callback) {
 							console.log('Read request received');
 							callback(this.RESULT_SUCCESS, new Buffer("Echo: " + (this.value ? this.value.toString('utf-8') : "")));
-						},
-
+													},
 						// accept a new value for the characteristic's value
 						onWriteRequest : function(data, offset, withoutResponse, callback) {
 							this.value = data;
-							console.log('Write request: value = ' + this.value.toString('utf-8'));
+							var readStr = this.value.toString('utf-8').trim();
+							console.log('Write request: value = ' + readStr);
 							callback(this.RESULT_SUCCESS);
-						}
+							// Center device should send string w/ format "wifi,<SSID>,<pswd>"
+							// split
+							if (readStr.length > 1) {
+								var strArray = readStr.split(',');
+								if (strArray[0] == 'wifi') {
+									console.log("here, sucka");
+									writeWPAconfig();
+								}
+							}
+							// execute commands
+							// reset wlan0
+							// ping
+							// send confirmation
+							// update opkg
 
+						}
 					})
 				]
 			})

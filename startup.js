@@ -2,31 +2,26 @@
 var exports = module.exports = {};
 var exec = require('child_process').exec;
 
-var MAC;
 var commands = [
 	'rfkill unblock bluetooth',
-//	'killall bluetoothd',
+	'systemctl disable bluetooth', 
 	'hciconfig hci0 up',
-	'rm /etc/opkg/base-feeds.conf',
-	'echo "src/gz all http://repo.opkg.net/edison/repo/all" >> /etc/opkg/base-feeds.conf',
-	'echo "src/gz edison http://repo.opkg.net/edison/repo/edison" >> /etc/opkg/base-feeds.conf',
-	'echo "src/gz core2-32 http://repo.opkg.net/edison/repo/core2-32" >> /etc/opkg/base-feeds.conf',
 	'hcitool dev'
 ];
 
-function runCmds(fn, errCount) {
+function runCmds(errCount) {
 	var errCount = errCount || 0;
 	var cmd = commands.shift();
 	if (!cmd) {
-		console.log('bluetooth init complete');
-		return fn();
+		console.log('bluetooth startup complete');
+		return;
 	}
 	if (errCount > 10) {
 		throw('too many errors: ' + cmd);
 	}
 
 	exec(cmd, function(err, stdout, stderr) {
-		if (err || (stdout && commands.length > 0)) {
+		if (err || (stdout && commands.length > 1)) {
 			commands.unshift(cmd);
 			console.log("problem completing " + cmd + " [" + errCount + "]");
 			if (err) console.log(err.toString('utf8'));
@@ -38,20 +33,14 @@ function runCmds(fn, errCount) {
 			if (commands.length == 0 && stdout == null) {
 				throw("Bluetooth did not initiate. No MAC address reported from hcitool");
 			} else if (commands.length == 0 && stdout) {
-				var tmp = stdout.toString('utf8');
-				MAC = tmp.slice(tmp.length - 18);
+				//
 			}
 		}
-		runCmds(fn, errCount);
+		runCmds(errCount);
 	});
 }
 
 //runCmds(); // for running as stand-alone script
 exports.runStartupCmds = runCmds;
 //exports.MAC = MAC;
-//
-//fn passed to runCmds to solve synchronous need in app.js. Other option
-// would be to use async library's waterfall function or (according to Sanjay),
-// using a Promise. If we start adding synchronous functionality to app.js, I
-// recommend looking at the async library's waterfall function
 
