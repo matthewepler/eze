@@ -25,16 +25,6 @@
 11. *[optional]* run `opkg install vim'. Default editor is ‘vi.’
   * Add your .vimrc file and install any plugins as necessary (use Filezilla or scp). 
   * In my case this requires installing [Vundle](https://github.com/VundleVim/Vundle.vim) first.
-12. Make a startup script that contains one command:
-  * `cd /etc`
-  * `mkdir init.d && cd init.d`
-  * `vim bootup.sh` (or vi if you didn't install vim)
-  * contents of file should read: 
-    * `#! /bin/sh`
-    * `touch /home/root/eze/test.js`
-  * `chmod +x /etc/init.d/bootup.sh`
-  * `chmod +x bootup.sh`
-  * test the script (bash bootup.sh)
-  * `update-rc.d bootup.sh defaults`
-  * output should read: Adding system startup for /etc/init.d/bootup.sh
-  * reboot and see if it worked! If it does, you should see 'test.js' in ~/eze.
+12. Make a [startup script](http://stephaniemoyerman.com/?p=41) that contains the following:
+  * `#! /bin/sh`
+  * `touch /home/root/eze/test.js`
