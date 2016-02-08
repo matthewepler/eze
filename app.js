@@ -1,12 +1,13 @@
-var startup = require('./startup.js');
+var startup = require('./startup.js')
 var ble = require('./ble_echo.js');
 var async = require('async');
 var fs = require('fs');
 var exec = require('child_process').exec;
 
+
 async.waterfall([
 	function(cb) {
-		var files = fs.readdirSync('/home/root/eze/');
+	var files = fs.readdirSync('/home/root/eze/');
 		cb(null, files);
 	},
 	function(files, cb) {

@@ -14,7 +14,7 @@
 var async = require('async');
 var exports = module.exports = {};
 var fs = require('fs');
-var exec = require('exec');
+var exec = require('child_process').exec;
 
 function writeWPAconfig(callback) {
 	var files = fs.readdirSync('/etc/wpa_supplicant/');	

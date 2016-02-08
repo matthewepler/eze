@@ -19,7 +19,9 @@ var exec = require('exec');
 function writeWPAconfig(callback) {
 	var files = fs.readdirSync('/etc/wpa_supplicant/');	
 	if (files.indexOf('wpa_supplicant.conf') > 0) {
-		
+		exec('rm wpa_supplicant.conf', function() {
+				
+		});
 	}
 }
 
