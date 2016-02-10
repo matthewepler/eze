@@ -19,15 +19,15 @@
 6. run `opkg install git`
 7. run `opkg install nodejs` to upgrade the default version of Node.
 8. run `opkg install bluez5-dev`
-9. clone this repo 
+9. *[optional]* run `opkg install vim'. Default editor is ‘vi.’
+  * Add your .vimrc file and install any plugins as necessary (use Filezilla or scp). 
+  * In my case this requires installing [Vundle](https://github.com/VundleVim/Vundle.vim) first.
+10. clone this repo 
   * cd into repo dir before proceeding
-10. run the following commands:
+11. run the following commands:
   * `npm install --save async`
   * `npm install --save noble`
   * `npm install --save bleno`
-11. *[optional]* run `opkg install vim'. Default editor is ‘vi.’
-  * Add your .vimrc file and install any plugins as necessary (use Filezilla or scp). 
-  * In my case this requires installing [Vundle](https://github.com/VundleVim/Vundle.vim) first.
 12. Make a [startup script](http://stephaniemoyerman.com/?p=41) that contains the following:
   * `#! /bin/sh`
   * `touch /home/root/eze/test.js`
