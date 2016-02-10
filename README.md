@@ -6,7 +6,7 @@
 2. [Login via screen utility in Terminal](https://software.intel.com/en-us/get-started-edison-osx-step3)
 3. run `configure_edison --setup` 
   * set pswd
-  * give your edison a unique name, like 'edison6' 
+  * give your edison a unique name, like 'edison6' This will be used to identify your device on Bluetooth scan!
   * Y to wifi, follow prompts
 4. run `vi /etc/opkg/base-feeds.conf`
   * press ‘i’ to insert a cursor into the document. 
