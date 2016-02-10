@@ -4,7 +4,10 @@
 
 1. [Reflash the OS](https://communities.intel.com/docs/DOC-25154)
 2. [Login via screen utility in Terminal](https://software.intel.com/en-us/get-started-edison-osx-step3)
-3. run `configure_edison --setup` (set pswd, leave name, Y to wifi)
+3. run `configure_edison --setup` 
+  * set pswd
+  * give your edison a unique name, like 'edison6' 
+  * Y to wifi, follow prompts
 4. run `vi /etc/opkg/base-feeds.conf`
   * press ‘i’ to insert a cursor into the document. 
   * paste these lines into the document:
