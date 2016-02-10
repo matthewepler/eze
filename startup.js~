@@ -14,7 +14,7 @@ function runCmds(errCount) {
 	var cmd = commands.shift();
 	if (!cmd) {
 		console.log('bluetooth startup complete');
-		return true;
+		return;
 	}
 	if (errCount > 10) {
 		throw('too many errors: ' + cmd);
@@ -43,9 +43,4 @@ function runCmds(errCount) {
 //runCmds(); // for running as stand-alone script
 exports.runStartupCmds = runCmds;
 //exports.MAC = MAC;
-//
-//fn passed to runCmds to solve synchronous need in app.js. Other option
-// would be to use async library's waterfall function or (according to Sanjay),
-// using a Promise. If we start adding synchronous functionality to app.js, I
-// recommend looking at the async library's waterfall function
 
