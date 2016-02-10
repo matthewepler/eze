@@ -15,6 +15,7 @@ var async = require('async');
 var exports = module.exports = {};
 var fs = require('fs');
 var exec = require('child_process').exec;
+var os = require('os');
 
 function writeWPAconfig(callback) {
 	var files = fs.readdirSync('/etc/wpa_supplicant/');	
@@ -31,7 +32,7 @@ var bleno = require('bleno');
 
 
 // set the device name unique string 
-process.env['BLENO_DEVICE_NAME'] = 'edison_1235';
+process.env['BLENO_DEVICE_NAME'] = os.hostname();
 
 // once bleno starts, begin advertising our BLE address
 bleno.on('stateChange', function(state) {
