@@ -6,24 +6,11 @@ var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 var wifi = require('./wifi.js');
 
-//function ping(msg) {
-//	console.log(msg);
-//	if (msg == 'wifigood') {
-//		var p = spawn('ping', ['8.8.8.8']);
-//		p.stdout.on('data', function(data) {
-//			var output = data.toString('utf8');
-//			if (output.indexOf('ms') > -1) {
-//				ble.bleno.write('ping success');
-//				//ble.bleno.disconnect();
-//			}	
-//		});
-//	}
-//}
 
 function start() {
 	checkFirstTime(); 			// see func def below	
 	startup.runStartupCmds();   // see startup.js
-	ble.start();			// see ble_echo.js line 103
+	ble.start();			    // see ble_echo.js line 103
 }
 
 function checkFirstTime() {
