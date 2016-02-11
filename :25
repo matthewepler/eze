@@ -20,16 +20,15 @@ async.waterfall([
 		}
 	},
 	function(result, cb) {
-		//console.log('3');
+		console.log('3');
 		console.log('DONE: ' + result);
-		start.runStartupCmds(0, cb());
+		start.runStartupCmds(0, cb);
 	},
 	function(cb) {
-		//console.log('4');
-		ble.start(cb);
-	},
-	function(cb) {
-		ble.ping(cb);
+		// this is running before startup.js is complete
+		console.log('4');
+		if (stdout) console.log(stdout.toString('utf8'));
+		exec('node ble_echo.js', cb);
 	}
 ], function(err, results) {
 	err ? console.log(err.toString('utf8')) : console.log(results);
