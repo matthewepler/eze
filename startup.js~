@@ -9,12 +9,12 @@ var commands = [
 	'hcitool dev'
 ];
 
-function runCmds(errCount, callback) {
+function runCmds(errCount) {
 	var errCount = errCount || 0;
 	var cmd = commands.shift();
 	if (!cmd) {
 		console.log('startup complete');
-		return callback;
+		return;
 	}
 	if (errCount > 10) {
 		throw('too many errors: ' + cmd);
@@ -31,7 +31,7 @@ function runCmds(errCount, callback) {
 			console.log("DONE: " + cmd);
 			if (stdout) console.log(stdout.toString('utf8'));
 			if (commands.length == 0 && stdout == null) {
-				throw("Bluetooth did not initiate. No MAC address reported from hcitool");
+				callback(new Error("Bluetooth did not initiate. No MAC address reported from hcitool"));
 			} else if (commands.length == 0 && stdout) {
 				//
 			}

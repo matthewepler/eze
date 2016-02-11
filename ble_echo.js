@@ -20,7 +20,7 @@ var wifi = require('./wifi.js');
 var os = require('os');
 
 
-var start = function(callback) {
+var start = function(cb) {
 // using the bleno module
 var bleno = require('bleno');
 
@@ -47,6 +47,7 @@ bleno.on('accept', function(clientAddress) {
 // notify the console that we've disconnected from a client
 bleno.on('disconnect', function(clientAddress) {
 	console.log('Disconnected from address: ' + clientAddress);
+	process.exit();
 });
 
 // when we begin advertising, create a new service and characteristic
@@ -87,19 +88,31 @@ bleno.on('advertisingStart', function(error) {
 						onReadRequest : function(offset, callback) {
 							console.log('Read request received');
 							callback(this.RESULT_SUCCESS, new Buffer("Echo: " + (this.value ? this.value.toString('utf-8') : "")));
-													},
+						},
+
 						// accept a new value for the characteristic's value
 						onWriteRequest : function(data, offset, withoutResponse, callback) {
 							this.value = data;
 							var readStr = this.value.toString('utf-8').trim();
 							console.log('Write request: value = ' + readStr);
-							callback(this.RESULT_SUCCESS);
 							// Center device should send string w/ format "wifi,<SSID>,<pswd>"
 							// split
 							if (readStr.length > 1) {
 								var strArray = readStr.split(',');
 								if (strArray[0] == 'wifi') {
-									wifi.config(strArray[1], strArray[2], callback);
+									wifi.config(strArray[1], strArray[2], function(response) {
+											console.log(response);
+											if (response == 'wifigood') {
+												wifi.ping(function(pingResponse) {
+													if (pingResponse == 'success') {
+														console.log('ping success, sending response');
+														callback(this.RESULT_SUCCESS, new Buffer("ping success!"));
+														// hopefully they see this Buffer response on their side in an event. We'll see...
+														// assuming that works, this process is still running. Now what?
+													}
+												});
+											}
+									});
 								}
 							}
 						}
@@ -111,6 +124,14 @@ bleno.on('advertisingStart', function(error) {
 });
 };
 
+function disconnect() {
+	bleno.disconnect();
+}
+function write(msg) {
+	bleno.updateValueCallback(new Buffer(msg));
+};
+
 
 exports.start = start;
+exports.disconnect = disconnect;
 //start();
