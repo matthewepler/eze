@@ -94,7 +94,7 @@ var start = function(cb) {
 													// test the wifi connection by pinging Google
 													wifi.ping(function(pingResponse) {
 														if (pingResponse == 'success') {
-															console.log('ping success, sending response');
+															console.log('ping success');
 															callback(this.RESULT_SUCCESS, new Buffer("ping success!"));
 															// hopefully they see this Buffer response on their side in an event. We'll see...
 															// assuming that works, this process is still running. Now what?

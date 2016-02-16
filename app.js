@@ -9,8 +9,9 @@ var ble = require('./ble_echo.js');
 
 function start() {
 	checkFirstTime(); 			// see func def below	
-	startup.runStartupCmds();   // see startup.js
-	ble.start();			    // see ble_echo.js, launches wifi.js
+	startup.runStartupCmds(0, function() {  // see startup.js
+		ble.start();	       // see ble_echo.js, launches wifi.js
+	});   
 }
 
 function checkFirstTime() {
