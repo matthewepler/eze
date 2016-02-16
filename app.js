@@ -1,19 +1,24 @@
-var startup = require('./startup.js');
-var ble = require('./ble_echo.js');
-var async = require('async');
+// node modules
 var fs = require('fs');
 var exec = require('child_process').exec;
-var spawn = require('child_process').spawn;
-var wifi = require('./wifi.js');
+
+// project files
+var startup = require('./startup.js');
+var ble = require('./ble_echo.js');
 
 
 function start() {
 	checkFirstTime(); 			// see func def below	
 	startup.runStartupCmds();   // see startup.js
-	ble.start();			    // see ble_echo.js line 103
+	ble.start();			    // see ble_echo.js, launches wifi.js
 }
 
 function checkFirstTime() {
+	// On startup, a script creates an empty file 'test.js' in the project dir.
+	// Startup script is located in /etc/init.d
+	
+	// Look for file. If it exists, it's the first time since bootup we're running
+	// the scrip tand need to avoid the hciconfig 'down' command.
 	var files = fs.readdirSync('/home/root/eze/');
 
 	if (files.indexOf('test.js') > -1) {
@@ -26,6 +31,7 @@ function checkFirstTime() {
 			}
 		});
 	} else  {
+		// if it's NOT the first time since bootup, we do need to run this
 		exec('hciconfig hci0 down', function(err, stdout, stderr) {
 			if (err) {
 				console.log(err);	
