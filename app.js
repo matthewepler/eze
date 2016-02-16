@@ -1,30 +1,40 @@
-var startup = require('./startup.js')
+var startup = require('./startup.js');
 var ble = require('./ble_echo.js');
 var async = require('async');
 var fs = require('fs');
 var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
+var wifi = require('./wifi.js');
 
 
-async.waterfall([
-	function(cb) {
+function start() {
+	checkFirstTime(); 			// see func def below	
+	startup.runStartupCmds();   // see startup.js
+	ble.start();			    // see ble_echo.js line 103
+}
+
+function checkFirstTime() {
 	var files = fs.readdirSync('/home/root/eze/');
-		cb(null, files);
-	},
-	function(files, cb) {
-		var check;
-		if (files.indexOf('test.js') > 0) {
-			exec('rm test.js', cb(null, 'rm test.js'));
-		} else  {
-			exec('hciconfig hci0 down', cb(null, 'hciconfig hci0 down'));
-		}
-	},
-	function(result, cb) {
-		console.log('DONE: ' + result);
-		startup.runStartupCmds(cb(null, true));
-	},
-	function(done, cb) {
-		done ? ble.start() : cb(new Error('could not run ble.start()'));
+
+	if (files.indexOf('test.js') > -1) {
+		exec('rm test.js', function(err, stdout, stderr) {
+			if (err) {
+				console.log(err);
+			} else {
+				if (stdout) console.log(stdout);
+				console.log('temp file removed');
+			}
+		});
+	} else  {
+		exec('hciconfig hci0 down', function(err, stdout, stderr) {
+			if (err) {
+				console.log(err);	
+			} else {
+				if (stdout) console.log(stdout);	
+				console.log('DONE: hciconfig hci0 down');
+			}
+		});
 	}
-], function(err, results) {
-	err ? console.log(err) : console.log(results);
-});
+}
+
+start();

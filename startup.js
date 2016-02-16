@@ -13,7 +13,7 @@ function runCmds(errCount) {
 	var errCount = errCount || 0;
 	var cmd = commands.shift();
 	if (!cmd) {
-		console.log('bluetooth startup complete');
+		console.log('startup complete');
 		return;
 	}
 	if (errCount > 10) {
@@ -31,7 +31,7 @@ function runCmds(errCount) {
 			console.log("DONE: " + cmd);
 			if (stdout) console.log(stdout.toString('utf8'));
 			if (commands.length == 0 && stdout == null) {
-				throw("Bluetooth did not initiate. No MAC address reported from hcitool");
+				callback(new Error("Bluetooth did not initiate. No MAC address reported from hcitool"));
 			} else if (commands.length == 0 && stdout) {
 				//
 			}
@@ -40,7 +40,7 @@ function runCmds(errCount) {
 	});
 }
 
-//runCmds(); // for running as stand-alone script
+//runCmds(0); // for running as stand-alone script
 exports.runStartupCmds = runCmds;
 //exports.MAC = MAC;
 
