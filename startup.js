@@ -1,4 +1,7 @@
-// startup commands
+// startup commands run as bash commands on the edison
+// used to get edison ready to use bluetooth without need of bluetoothctl CLI
+// for more info, see the background doc in the repo (Matt to-do)
+
 var exports = module.exports = {};
 var exec = require('child_process').exec;
 
@@ -32,15 +35,12 @@ function runCmds(errCount) {
 			if (stdout) console.log(stdout.toString('utf8'));
 			if (commands.length == 0 && stdout == null) {
 				callback(new Error("Bluetooth did not initiate. No MAC address reported from hcitool"));
-			} else if (commands.length == 0 && stdout) {
-				//
-			}
+			} 
 		}
 		runCmds(errCount);
 	});
 }
 
-//runCmds(0); // for running as stand-alone script
+//runCmds(0); 
 exports.runStartupCmds = runCmds;
-//exports.MAC = MAC;
 

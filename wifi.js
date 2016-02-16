@@ -7,6 +7,8 @@ var async = require('async');
 var ping = require('net-ping');
 var exports = module.exports = {};
 
+// this mirrors the default wpa_supplicant.conf file on the edison
+// this text is written to a file in the config() func below
 function buildContents(SSID, psk) {
 	var data = [];
 	 data[0] = [
@@ -34,9 +36,11 @@ function buildContents(SSID, psk) {
 	return data.join("\n\n");
 }
 
+// called from ble_echo.js after string is received and parsed from center device (phone)
+// for more info see background doc in repo
 exports.config = function(SSID, psk, callback) {
 	console.log('writing new conf file...');
-	var dataString = buildContents(SSID, psk);
+	var dataString = buildContents(SSID, psk); // see above
 	fs.writeFileSync('/etc/wpa_supplicant/wpa_supplicant.conf', dataString, 'utf8');
 	
 	console.log('wlan0 going up');
