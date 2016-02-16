@@ -86,7 +86,7 @@ exports.ping = function(callback) {
 		if (output.indexOf('ms') > -1) {
 			callback('success');
 		}
-		p.end();
+		p.kill();
 	});
 }
 
